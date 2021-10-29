@@ -1,0 +1,207 @@
+openapi: 3.0.1
+info:
+  title: Bash Insider API
+  version: '1.0'
+  description: The API allows user to perform Employee information related transactions such as retrieve and delete employee records.
+  contact:
+    name: Thakur Ganeshsingh
+    url: 'https://thakurganeshsingh.com/contact'
+    email: thakur.ganeshsingh@bazaarvoice.com
+  termsOfService: 'https://github.com/thakurganeshsinghbv/privacy-api-doc/blob/main/LICENSE'
+  license:
+    name: Apache License 2.0
+    url: 'https://github.com/thakurganeshsinghbv/privacy-api-doc/blob/main/LICENSE'
+servers:
+  - url: 'http://localhost:8080'
+    description: Generated server url
+paths:
+  /employees:
+    get:
+      tags:
+        - Employee API
+      summary: Get Employees List
+      description: The API returns list of all the employee records stored in Bash Insider system
+      operationId: getEmployees
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                description: ''
+                minItems: 1
+                uniqueItems: true
+                x-examples:
+                  example-1:
+                    - empId: 1
+                      firstName: Myrwyn
+                      lastName: Gooderson
+                      email: mgooderson0@smh.com.au
+                      gender: Polygender
+                      officeLocation: Qingzhou
+                      profilePic: 'http://dummyimage.com/124x100.png/ff4444/ffffff'
+                      title: Editor
+                    - empId: 2
+                      firstName: Ricoriki
+                      lastName: Schultz
+                      email: rschultz1@moonfruit.com
+                      gender: Genderfluid
+                      officeLocation: Huanghuatan
+                      profilePic: 'http://dummyimage.com/224x100.png/dddddd/000000'
+                      title: Clinical Specialist
+                items:
+                  $ref: '#/components/schemas/EmployeeDao'
+              examples:
+                employees:
+                  value:
+                    - empId: 1
+                      firstName: Myrwyn
+                      lastName: Gooderson
+                      email: mgooderson0@smh.com.au
+                      gender: Polygender
+                      officeLocation: Qingzhou
+                      profilePic: 'http://dummyimage.com/124x100.png/ff4444/ffffff'
+                      title: Editor
+                    - empId: 2
+                      firstName: Ricoriki
+                      lastName: Schultz
+                      email: rschultz1@moonfruit.com
+                      gender: Genderfluid
+                      officeLocation: Huanghuatan
+                      profilePic: 'http://dummyimage.com/224x100.png/dddddd/000000'
+                      title: Clinical Specialist
+  '/employees/{id}':
+    get:
+      tags:
+        - Employee API
+      summary: Get Employee By Identifier
+      description: 'The API returns the specific employee record based on identifier, stored in Bash Insider system'
+      operationId: getEmployeesById
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmployeeDao'
+              examples:
+                employee:
+                  value:
+                    empId: 1
+                    firstName: Myrwyn
+                    lastName: Gooderson
+                    email: mgooderson0@smh.com.au
+                    gender: Polygender
+                    officeLocation: Qingzhou
+                    profilePic: 'http://dummyimage.com/124x100.png/ff4444/ffffff'
+                    title: Editor
+    delete:
+      tags:
+        - Employee API
+      summary: Remove an employee by Identifier
+      description: 'The API allows to delete the specific employee record based on identifier, stored in Bash Insider system'
+      operationId: deleteEmployees
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        '200':
+          description: OK
+  /employees/titles:
+    get:
+      tags:
+        - Employee API
+      summary: List Employee Titles
+      description: Returns the unique employee titles
+      operationId: getUniqueTitles
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: string
+  /employees/titles/count:
+    get:
+      tags:
+        - Employee API
+      summary: Get Employee Headcount by Job Title
+      description: Returns the total count of employees for specific
+      operationId: getEmployeesHeadCountByTitle
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                description: ''
+                type: object
+                x-examples:
+                  example-1:
+                    title: ''
+                    count: 1
+                properties:
+                  title:
+                    type: string
+                  count:
+                    type: number
+                required:
+                  - title
+                  - count
+              examples: {}
+  /employees/count:
+    get:
+      tags:
+        - Employee API
+      summary: Get Employee Headcount
+      description: Returns the total count of employees
+      operationId: getEmployeesHeadCount
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: integer
+                format: int64
+              examples:
+                employee-count:
+                  value: 10000
+components:
+  schemas:
+    EmployeeDao:
+      type: object
+      properties:
+        empId:
+          type: integer
+          format: int64
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+        gender:
+          type: string
+        officeLocation:
+          type: string
+        profilePic:
+          type: string
+        title:
+          type: string
+tags:
+  - name: Bash Insider API
